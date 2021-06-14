@@ -13,7 +13,7 @@ export default function LoggedOutNav() {
                 headerBackTitleVisible: false
             }}
         >
-            <Stack.Screen name="Welcome" component={Welcome} />
+            <Stack.Screen name="Welcome" options={{ headerShown: false }} component={Welcome} />
             <Stack.Screen name="Login" component={LogIn} />
             <Stack.Screen name="CreateAccount" component={CreateAccount} />
         </Stack.Navigator>
