@@ -11,10 +11,15 @@ export default function LogIn({ navigation }) {
         nextOne?.current?.focus();
     };
     const onValid = (data) => {
+        console.log(data);
     };
     useEffect(() => {
-        register("username");
-        register("password");
+        register("username", {
+            required: true,
+        });
+        register("password", {
+            required: true,
+        });
     }, [register]);
     return (
         <AuthLayout>
@@ -38,7 +43,7 @@ export default function LogIn({ navigation }) {
         />
         <AuthButton 
             text="Log In" 
-            disabled={true} 
+            disabled={false} 
             onPress={handleSubmit(onValid)}
         />
     </AuthLayout>
