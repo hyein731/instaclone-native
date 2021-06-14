@@ -15,7 +15,8 @@ export const logUserIn = async (token) => {
 };
 
 const client = new ApolloClient({
-    uri: "http://localhost:4000/graphql",
+    // uri: "http://localhost:4000/graphql",
+    uri: "https://moody-fox-43.loca.lt/graphql",
     cache: new InMemoryCache(),
 });
 
