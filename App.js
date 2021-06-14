@@ -4,7 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import LoggedOutNav from "./navigators/LoggedOutNav";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, ThemeProvider } from "@react-navigation/native";
+import { AppearanceProvider, Appearance } from "react-native-appearance";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -34,9 +35,17 @@ export default function App() {
     );
   }
 
+  // const light = Appearance.getColorScheme() === "light";
+  const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+    console.log(colorScheme); // dark
+  });
   return (
-    <NavigationContainer>
-      <LoggedOutNav />
-    </NavigationContainer>
+    <AppearanceProvider>
+      {/* <ThemeProvider theme={light? lightTheme : darkTheme}> */}
+        <NavigationContainer>
+          <LoggedOutNav />
+        </NavigationContainer>
+      {/* </ThemeProvider> */}
+    </AppearanceProvider>
   );
 }
