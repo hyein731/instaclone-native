@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, makeVar, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { offsetLimitPagination } from "@apollo/client/utilities";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const isLoggedInVar = makeVar(false);
@@ -25,7 +26,7 @@ export const logUserOut = async () => {
 
 const httpLink = createHttpLink({
     // uri: "http://localhost:4000/graphql",
-    uri: "https://moody-fox-43.loca.lt/graphql",
+    uri: "https://breezy-gecko-12.loca.lt/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {

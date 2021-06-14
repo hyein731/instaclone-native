@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { FlatList } from "react-native";
 import ScreenLayout from "../components/ScreenLayout";
@@ -26,13 +26,21 @@ const FEED_QUERY = gql`
 `;
 
 export default function Feed() {
-  const { data, loading } = useQuery(FEED_QUERY);
+  const { data, loading, refetch } = useQuery(FEED_QUERY);
   const renderPhoto = ({ item: photo }) => {
     return <Photo {...photo} />;
   };
+  const refresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
+  const [refreshing, setRefreshing] = useState(false);
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        refreshing={refreshing}
+        onRefresh={refresh}
         style={{ width: "100%" }}
         showsVerticalScrollIndicator={false}
         data={data?.seeFeed}
