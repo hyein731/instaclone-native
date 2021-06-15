@@ -47,7 +47,7 @@ export default function PhotoScreen({ route }) {
           justifyContent: "center",
         }}
       >
-        <Photo {...data?.seePhoto} />
+        { data?.seePhoto && <Photo {...data?.seePhoto} />}
       </ScrollView>
     </ScreenLayout>
   );
