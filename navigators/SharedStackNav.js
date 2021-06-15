@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Photo from "../screens/Photo";
