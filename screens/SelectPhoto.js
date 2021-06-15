@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import styled from "styled-components/native";
-import { FlatList, Image, TouchableOpacity, useWindowDimensions } from "react-native";
+import { FlatList, Image, TouchableOpacity, useWindowDimensions, Platform } from "react-native";
 import { colors } from "../colors";
 
 const Container = styled.View`
@@ -50,14 +50,14 @@ export default function SelectPhoto({ navigation }) {
   };
 
   const getPermissions = async () => {
-    const { accessPrivileges, canAskAgain } = await MediaLibrary.getPermissionsAsync();
-    if (accessPrivileges === "none" && canAskAgain) {
-      const { accessPrivileges } = await MediaLibrary.requestPermissionsAsync();
-      if (accessPrivileges !== "none") {
+    const { accessPrivileges, status, canAskAgain } = await MediaLibrary.getPermissionsAsync();
+    if ((accessPrivileges === "none" || status === "undetermined") && canAskAgain) {
+      const { accessPrivileges, status } = await MediaLibrary.requestPermissionsAsync();
+      if ((Platform.OS !== "android" && accessPrivileges !== "none") || (Platform.OS === "android" && status !== "undetermined")) {
         setOk(true);
         getPhotos();
       }
-    } else if (accessPrivileges !== "none") {
+    } else if ((Platform.OS !== "android" && accessPrivileges !== "none") || (Platform.OS === "android" && status !== "undetermined")) {
       setOk(true);
       getPhotos();
     }
