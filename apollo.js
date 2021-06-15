@@ -26,7 +26,7 @@ export const logUserOut = async () => {
 
 const httpLink = createHttpLink({
     // uri: "http://localhost:4000/graphql",
-    uri: "https://breezy-gecko-12.loca.lt/graphql",
+    uri: "https://fat-ape-85.loca.lt/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -38,23 +38,25 @@ const authLink = setContext((_, { headers }) => {
     };
 });
 
+export const cache = new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+            // seeFeed: {
+            //     keyArgs: false,
+            //     merge(existing = [], incoming = []) {
+            //         return [...existing, ...incoming];
+            //     },
+            // },
+            seeFeed: offsetLimitPagination(),
+        },
+      },
+    },
+});
+
 const client = new ApolloClient({
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache({
-        typePolicies: {
-          Query: {
-            fields: {
-                // seeFeed: {
-                //     keyArgs: false,
-                //     merge(existing = [], incoming = []) {
-                //         return [...existing, ...incoming];
-                //     },
-                // },
-                seeFeed: offsetLimitPagination(),
-            },
-          },
-        },
-      }),
+    cache,
 });
 
 export default client;
