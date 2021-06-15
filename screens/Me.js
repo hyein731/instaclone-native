@@ -8,7 +8,7 @@ export default function Me({ navigation }) {
     navigation.setOptions({
       title: data?.me?.username,
     });
-  }, []);
+  }, [data]);
   return (
     <View
       style={{
