@@ -18,9 +18,9 @@ export default function useMe() {
     skip: !hasToken,
   });
   useEffect(() => {
-    if (data?.me === null) {
+    if (data?.me === null || !hasToken) {
       logUserOut();
     }
-  }, [data]);
+  }, [data, hasToken]);
   return { data };
 }

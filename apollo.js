@@ -22,8 +22,9 @@ export const logUserIn = async (token) => {
 
 export const logUserOut = async () => {
     await AsyncStorage.removeItem(TOKEN);
-    isLoggedInVar(false);
     tokenVar(null);
+    isLoggedInVar(false);
+    cache.reset();
 };
 
 const uploadHttpLink = createUploadLink({
