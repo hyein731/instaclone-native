@@ -3,8 +3,20 @@ import { useForm } from "react-hook-form";
 import { ActivityIndicator } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components/native";
+import { gql, useMutation } from "@apollo/client";
+import { ReactNativeFile } from "apollo-upload-client";
 import { colors } from "../colors";
 import DismissKeyboard from "../components/DismissKeyboard";
+import { FEED_PHOTO } from "../fragments";
+
+const UPLOAD_PHOTO_MUTATION = gql`
+  mutation uploadPhoto($file: Upload!, $caption: String) {
+    uploadPhoto(file: $file, caption: $caption) {
+      ...FeedPhoto
+    }
+  }
+  ${FEED_PHOTO}
+`;
 
 const Container = styled.View`
   flex: 1;
@@ -32,14 +44,31 @@ const HeaderRightText = styled.Text`
 `;
 
 export default function UploadForm({ route, navigation }) {
+  const updateUploadPhoto = (cache, result) => {
+    const {
+      data: { uploadPhoto },
+    } = result;
+    if (uploadPhoto.id) {
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          seeFeed(prev) {
+            return [uploadPhoto, ...prev];
+          },
+        },
+      });
+      navigation.navigate("Tabs");
+    }
+  };
+  const [uploadPhotoMutation, { loading }] = useMutation(
+    UPLOAD_PHOTO_MUTATION,
+    {
+      update: updateUploadPhoto,
+    }
+  );
+
   const HeaderRight = () => (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("UploadForm", {
-          file: chosenPhoto,
-        })
-      }
-    >
+    <TouchableOpacity onPress={handleSubmit(onValid)}>
       <HeaderRightText>Next</HeaderRightText>
     </TouchableOpacity>
   );
@@ -56,13 +85,26 @@ export default function UploadForm({ route, navigation }) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: HeaderRightLoading,
-      headerLeft: () => null,
+      headerRight: loading ? HeaderRightLoading : HeaderRight,
+      ...(loading && { headerLeft: () => null }),
     });
-  }, []);
+  }, [loading]);
 
-  const onValid = ({ caption }) => {};
-  
+  const onValid = ({ caption }) => {
+    const file = new ReactNativeFile({
+      uri: route.params.file,
+      name: "1.jpg",
+      type: "image/jpeg",
+    });
+
+    uploadPhotoMutation({
+      variables: {
+        caption,
+        file,
+      },
+    });
+  };
+
   return (
     <DismissKeyboard>
       <Container>
