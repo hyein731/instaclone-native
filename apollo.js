@@ -21,9 +21,9 @@ export const logUserIn = async (token) => {
 };
 
 export const logUserOut = async () => {
-    await AsyncStorage.removeItem(TOKEN);
     tokenVar(null);
     isLoggedInVar(false);
+    await AsyncStorage.removeItem(TOKEN);
     cache.reset();
 };
 
