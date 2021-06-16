@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 
 export default function LoggedInNav() {
   return (
-    <Stack.Navigator mode="modal">
+    <Stack.Navigator mode="modal" screenOptions={{ headerTitleAlign: "center" }}>
       <Stack.Screen
         name="Tabs" 
         options={{ headerShown: false }} 

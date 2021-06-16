@@ -36,6 +36,7 @@ export default function UploadNav() {
                 backgroundColor: "black",
                 shadowOpacity: 0.3,
               },
+              headerTitleAlign: "center",
             }}
           >
             <Stack.Screen

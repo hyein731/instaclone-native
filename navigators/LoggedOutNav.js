@@ -14,6 +14,7 @@ export default function LoggedOutNav() {
                 headerTitle: false,
                 headerTransparent: true,
                 headerTintColor: "white",
+                headerTitleAlign: "center",
             }}
         >
             <Stack.Screen name="Welcome" options={{ headerShown: false }} component={Welcome} />
