@@ -51,13 +51,13 @@ export default function SelectPhoto({ navigation }) {
 
   const getPermissions = async () => {
     const { accessPrivileges, status, canAskAgain } = await MediaLibrary.getPermissionsAsync();
-    if ((accessPrivileges === "none" || status === "undetermined") && canAskAgain) {
+    if ((accessPrivileges === "none" || status !== "granted") && canAskAgain) {
       const { accessPrivileges, status } = await MediaLibrary.requestPermissionsAsync();
-      if ((Platform.OS !== "android" && accessPrivileges !== "none") || (Platform.OS === "android" && status !== "undetermined")) {
+      if ((Platform.OS !== "android" && accessPrivileges !== "none") || (Platform.OS === "android" && status === "granted")) {
         setOk(true);
         getPhotos();
       }
-    } else if ((Platform.OS !== "android" && accessPrivileges !== "none") || (Platform.OS === "android" && status !== "undetermined")) {
+    } else if ((Platform.OS !== "android" && accessPrivileges !== "none") || (Platform.OS === "android" && status === "granted")) {
       setOk(true);
       getPhotos();
     }

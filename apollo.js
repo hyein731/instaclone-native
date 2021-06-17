@@ -46,7 +46,7 @@ export const cache = new InMemoryCache({
 
 const uploadHttpLink = createUploadLink({
     // uri: "http://localhost:4000/graphql",
-    uri: "https://fresh-donkey-18.loca.lt/graphql",
+    uri: "https://instaclone-backend-ini.herokuapp.com/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -71,7 +71,7 @@ const httpLinks = authLink.concat(onErrorLink).concat(uploadHttpLink);
 
 const wsLink = new WebSocketLink({
   // uri: "ws://localhost:4000/graphql",
-  uri: "ws://fresh-donkey-18.loca.lt/graphql",
+  uri: "ws://instaclone-backend-ini.herokuapp.com/graphql",
   options: {
     // reconnect: true,
     connectionParams: () => ({
