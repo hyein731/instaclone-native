@@ -73,7 +73,7 @@ const wsLink = new WebSocketLink({
   // uri: "ws://localhost:4000/graphql",
   uri: "ws://fresh-donkey-18.loca.lt/graphql",
   options: {
-    reconnect: true,
+    // reconnect: true,
     connectionParams: () => ({
       token: tokenVar(),
     }),
