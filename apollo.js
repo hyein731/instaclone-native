@@ -28,20 +28,25 @@ export const logUserOut = async () => {
     cache.reset();
 };
 
+export const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+          // seeFeed: {
+          //     keyArgs: false,
+          //     merge(existing = [], incoming = []) {
+          //         return [...existing, ...incoming];
+          //     },
+          // },
+          seeFeed: offsetLimitPagination(),
+      },
+    },
+  },
+});
+
 const uploadHttpLink = createUploadLink({
     // uri: "http://localhost:4000/graphql",
     uri: "https://fresh-donkey-18.loca.lt/graphql",
-});
-
-const wsLink = new WebSocketLink({
-  // uri: "ws://localhost:4000/graphql",
-  uri: "ws://fresh-donkey-18.loca.lt/graphql",
-  options: {
-    reconnect: true,
-    connectionParams: {
-      token: tokenVar(),
-    },
-  },
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -62,23 +67,18 @@ const onErrorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
-export const cache = new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-            // seeFeed: {
-            //     keyArgs: false,
-            //     merge(existing = [], incoming = []) {
-            //         return [...existing, ...incoming];
-            //     },
-            // },
-            seeFeed: offsetLimitPagination(),
-        },
-      },
-    },
-});
-
 const httpLinks = authLink.concat(onErrorLink).concat(uploadHttpLink);
+
+const wsLink = new WebSocketLink({
+  // uri: "ws://localhost:4000/graphql",
+  uri: "ws://fresh-donkey-18.loca.lt/graphql",
+  options: {
+    reconnect: true,
+    connectionParams: () => ({
+      token: tokenVar(),
+    }),
+  },
+});
 
 const splitLink = split(
   ({ query }) => {
